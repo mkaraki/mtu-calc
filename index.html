@@ -15,82 +15,67 @@
     </header>
 
     <main>
-        <form action="" method="post" onsubmit="calc(); return false">
-            <section>
-                <h2>MTU</h2>
+        <div class="f-l">
+            <div>
+                <h3>Config</h3>
                 <div>
-                    <label for="n-ether-frame">Ethernet Frame (Default: 1518 byte)</label>
-                    <input type="number" name="n-ether-frame" id="n-ether-frame" value="1518" required min="1">
+                    <label for="n-ether-frame">Ether frame</label>
+                    <input type="number" id="n-ether-frame" value="1518" min="1" step="1" oninput="calc()">
                 </div>
-                <div>
-                    <input type="checkbox" name="c-ether" id="c-ether" data-size="18" class="mtu" checked>
-                    <label for="c-ether">Ethernet/FCS (18 byte)</label>
-                </div>
-                <div>
-                    <input type="checkbox" name="c-pppoe8" id="c-pppoe8" class="mtu" data-size="8">
-                    <label for="c-pppoe8">PPPoE (8 byte)</label>
-                </div>
-                <div>
-                    <input type="checkbox" name="c-pppoe32" id="c-pppoe46" class="mtu" data-size="46">
-                    <label for="c-pppoe46">Japan NTT Flet's PPPoE (L2TP, 46 byte)</label>
-                </div>
-                <div>
-                    <input type="checkbox" name="c-ipv4" id="c-ipv4" class="mtu" data-sizefor="n-ipv4">
-                    <label for="c-ipv4">IPv4</label>
-                    <input type="number" name="n-ipv4" id="n-ipv4" value="20" min="20">
-                    <label for="n-ipv4">(Default: 20 byte)</label>
-                </div>
-                <div>
-                    <input type="checkbox" name="c-ipv6" id="c-ipv6" class="mtu" data-sizefor="n-ipv6">
-                    <label for="c-ipv6">IPv6</label>
-                    <input type="number" name="n-ipv6" id="n-ipv6" value="40" min="40">
-                    <label for="n-ipv6">(Default: 40 byte)</label>
-                </div>
-                <div>
-                    <input type="checkbox" name="c-wireguard" id="c-wireguard" class="mtu" data-size="40">
-                    <label for="c-wireguard">WireGuard without IP (40 byte, UDP+WG)</label>
-                    <span class="notice">
-                        You have to choose IPv4 or IPv6 to calculate MTU.
-                    </span>
-                </div>
-                <button type="submit">Calculate</button>
-            </section>
-            <section>
-                <h2>MSS</h2>
-                <div>
-                    <h3>Internet Layer</h3>
-                    <div>
-                        <input type="checkbox" name="cs-ipv4" id="cs-ipv4" data-sizefor="ns-ipv4" class="mss">
-                        <label for="cs-ipv4">IPv4</label>
-                        <input type="number" name="ns-ipv4" id="ns-ipv4" value="20" min="20">
-                        <label for="ns-ipv4">(Default: 20 byte)</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="cs-ipv6" id="cs-ipv6" class="mss" data-sizefor="ns-ipv6">
-                        <label for="cs-ipv6">IPv6</label>
-                        <input type="number" name="ns-ipv6" id="ns-ipv6" value="40" min="40">
-                        <label for="ns-ipv6">(Default: 40 byte)</label>
-                    </div>
-                </div>
-                <div>
-                    <h3>Transport Layer</h3>
-                    <div>
-                        <input type="checkbox" name="cs-tcp" id="cs-tcp" class="mss" data-sizefor="ns-tcp">
-                        <label for="cs-tcp">TCP</label>
-                        <input type="number" name="ns-tcp" id="ns-tcp" value="20" min="20">
-                        <label for="ns-tcp">(Default: 20 byte)</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="cs-udp" id="cs-udp" class="mss" data-size="8">
-                        <label for="cs-udp">UDP (8 byte)</label>
-                    </div>
-                </div>
-                <button type="submit">Calculate</button>
-            </section>
-        </form>
+            </div>
+            <div>
+                <h3>Protocol</h3>
+                <p>Click to add protocol.</p>
+            </div>
+            <ul>
+                <li>
+                    Ethernet
+                    <ul>
+                        <li><a href="javascript:add('Ethernet/FCS', 18)">Ethernet/FCS</a></li>
+                    </ul>
+                </li>
+                <li>
+                    PPPoE
+                    <ul>
+                        <li><a href="javascript:add('PPPoE', 8)">PPPoE</a></li>
+                        <li><a href="javascript:add('NTT Flet\'s PPPoE', 46)">NTT Flet's PPPoE</a></li>
+                    </ul>
+                </li>
+                <li>
+                    Low level Tunneling Protocol
+                    <ul>
+                        <li><a href="javascript:add('GRE v4', 24)">GRE over IPv4</a></li>
+                        <li><a href="javascript:add('GRE v6', 44)">GRE over IPv6</a></li>
+                        <li><a href="javascript:add('IPv4 over IPv6', 40)">IPv4 over IPv6</a></li>
+                    </ul>
+                </li>
+                <li>
+                    VPN Application
+                    <ul>
+                        <li><a href="javascript:add('Wireguard over IPv4', 60)">Wireguard over IPv4</a></li>
+                        <li><a href="javascript:add('Wireguard over IPv6', 80)">Wireguard over IPv6</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="f-l">
+            <h3>List</h3>
+            <div id="list">
+                <noscript>
+                    <p class="notice">This site require JavaScript.</p>
+                </noscript>
+            </div>
+            <div id="result">
+                MTU = <span id="res-mtu">1500</span> byte<br>
+                MSS = <span id="res-mss">1460</span> byte (MTU - 40 byte)
+            </div>
+        </div>
     </main>
 
     <script src="index.js"></script>
+    <script>
+        add('Ethernet/FCS', 18);
+    </script>
 </body>
 
 </html>

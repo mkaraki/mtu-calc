@@ -1,0 +1,18 @@
+@media (prefers-color-scheme: dark) {
+
+    html,
+    body {
+        background-color: black;
+        color: white;
+    }
+
+    input[type="number"] {
+        background-color: #333;
+        color: white;
+    }
+
+    button {
+        background-color: #333;
+        color: white;
+    }
+}

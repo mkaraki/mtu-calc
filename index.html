@@ -5,59 +5,90 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MTU Calculator</title>
+    <title>MTU/MSS Calculator</title>
     <link rel="stylesheet" href="global.css">
 </head>
 
 <body>
-    <form action="" method="post" onsubmit="calc(); return false">
-        <section>
-            <h2>MTU</h2>
-            <div>
-                <label for="n-ether-frame">Ethernet Frame (Default: 1518 byte)</label>
-                <input type="number" name="n-ether-frame" id="n-ether-frame" value="1518" required min="1">
-            </div>
-            <div>
-                <input type="checkbox" name="c-ether" id="c-ether" data-size="18" class="mtu" checked>
-                <label for="c-ether">Ethernet/FCS (18 byte)</label>
-            </div>
-            <div>
-                <input type="checkbox" name="c-pppoe8" id="c-pppoe8" class="mtu" data-size="8">
-                <label for="c-pppoe8">PPPoE (8 byte)</label>
-            </div>
-            <button type="submit">Calculate</button>
-        </section>
-        <section>
-            <h2>MSS</h2>
-            <div>
+    <header>
+        <h1>MTU/MSS Calculator</h1>
+    </header>
+
+    <main>
+        <form action="" method="post" onsubmit="calc(); return false">
+            <section>
+                <h2>MTU</h2>
                 <div>
-                    <input type="checkbox" name="cs-ipv4" id="cs-ipv4" data-sizefor="n-ipv4" class="mss">
-                    <label for="cs-ipv4">IPv4</label>
+                    <label for="n-ether-frame">Ethernet Frame (Default: 1518 byte)</label>
+                    <input type="number" name="n-ether-frame" id="n-ether-frame" value="1518" required min="1">
+                </div>
+                <div>
+                    <input type="checkbox" name="c-ether" id="c-ether" data-size="18" class="mtu" checked>
+                    <label for="c-ether">Ethernet/FCS (18 byte)</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="c-pppoe8" id="c-pppoe8" class="mtu" data-size="8">
+                    <label for="c-pppoe8">PPPoE (8 byte)</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="c-pppoe32" id="c-pppoe46" class="mtu" data-size="46">
+                    <label for="c-pppoe46">Japan NTT Flet's PPPoE (L2TP, 46 byte)</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="c-ipv4" id="c-ipv4" class="mtu" data-sizefor="n-ipv4">
+                    <label for="c-ipv4">IPv4</label>
                     <input type="number" name="n-ipv4" id="n-ipv4" value="20" min="20">
                     <label for="n-ipv4">(Default: 20 byte)</label>
                 </div>
                 <div>
-                    <input type="checkbox" name="cs-ipv6" id="cs-ipv6" class="mss" data-sizefor="n-ipv6">
-                    <label for="cs-ipv6">IPv6</label>
+                    <input type="checkbox" name="c-ipv6" id="c-ipv6" class="mtu" data-sizefor="n-ipv6">
+                    <label for="c-ipv6">IPv6</label>
                     <input type="number" name="n-ipv6" id="n-ipv6" value="40" min="40">
                     <label for="n-ipv6">(Default: 40 byte)</label>
                 </div>
-            </div>
-            <div>
                 <div>
-                    <input type="checkbox" name="cs-tcp" id="cs-tcp" class="mss" data-sizefor="n-tcp">
-                    <label for="cs-tcp">TCP</label>
-                    <input type="number" name="n-tcp" id="n-tcp" value="20" min="20">
-                    <label for="n-tcp">(Default: 20 byte)</label>
+                    <input type="checkbox" name="c-wireguard" id="c-wireguard" class="mtu" data-size="40">
+                    <label for="c-wireguard">WireGuard without IP (40 byte, UDP+WG)</label>
+                    <span class="notice">
+                        You have to choose IPv4 or IPv6 to calculate MTU.
+                    </span>
+                </div>
+                <button type="submit">Calculate</button>
+            </section>
+            <section>
+                <h2>MSS</h2>
+                <div>
+                    <h3>Internet Layer</h3>
+                    <div>
+                        <input type="checkbox" name="cs-ipv4" id="cs-ipv4" data-sizefor="ns-ipv4" class="mss">
+                        <label for="cs-ipv4">IPv4</label>
+                        <input type="number" name="ns-ipv4" id="ns-ipv4" value="20" min="20">
+                        <label for="ns-ipv4">(Default: 20 byte)</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="cs-ipv6" id="cs-ipv6" class="mss" data-sizefor="ns-ipv6">
+                        <label for="cs-ipv6">IPv6</label>
+                        <input type="number" name="ns-ipv6" id="ns-ipv6" value="40" min="40">
+                        <label for="ns-ipv6">(Default: 40 byte)</label>
+                    </div>
                 </div>
                 <div>
-                    <input type="checkbox" name="cs-udp" id="cs-udp" class="mss" data-size="8">
-                    <label for="cs-udp">UDP (8 byte)</label>
+                    <h3>Transport Layer</h3>
+                    <div>
+                        <input type="checkbox" name="cs-tcp" id="cs-tcp" class="mss" data-sizefor="ns-tcp">
+                        <label for="cs-tcp">TCP</label>
+                        <input type="number" name="ns-tcp" id="ns-tcp" value="20" min="20">
+                        <label for="ns-tcp">(Default: 20 byte)</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="cs-udp" id="cs-udp" class="mss" data-size="8">
+                        <label for="cs-udp">UDP (8 byte)</label>
+                    </div>
                 </div>
-            </div>
-            <button type="submit">Calculate</button>
-        </section>
-    </form>
+                <button type="submit">Calculate</button>
+            </section>
+        </form>
+    </main>
 
     <script src="index.js"></script>
 </body>
